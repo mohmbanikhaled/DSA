@@ -1,7 +1,8 @@
+#include <iostream>
 #include <cmath>
 #include <stack>
 #include <vector>
-#include <iostream>
+
 
 using namespace std;
 
@@ -51,9 +52,9 @@ ll modpow(ll x, ll n,ll m) {
 	return result;
 }
 
-vector<ll> divisors(ll x,bool first = 1,bool last = 1) {
-	vector<ll>d;
-	stack<ll>s;
+vector<ll> divisors(ll x,bool first = 1,bool last = 1) {        // O(n^(1/2)) 
+	vector<ll>d;                                                // first if you want to include 1
+	stack<ll>s;                                                 // last if you want to include the number it self
 	if (first) d.push_back(1);
 	for (ll i = 2; i * i <= x; i++) {
 		if (x % i == 0) {
@@ -71,8 +72,8 @@ vector<ll> divisors(ll x,bool first = 1,bool last = 1) {
 	return d;
 }
 
-vector<ll> primeFactors(int x) {
-	vector<ll>pf;
+vector<ll> primeFactors(int x) {             // O(n^(1/2))
+	vector<ll>pf; 
 	for (int i = 2; i * i <= x; i++) {
 		while (x % i == 0) {
 			x /= i;
@@ -125,11 +126,11 @@ ll ncr(int n,int r) {
 }
 
 const int sz = 1e6+6;
-bool nonPrime[sz];
-void sieveSOE() {               //sieve of eratosthenes                 n(log(log(n)))
-	nonPrime[0] = nonPrime[1] = 1;
+bool nonPrime[sz] = {0};        // at first we declare all numbers as prime
+void sieveSOE() {               //sieve of eratosthenes                 O(n(log(log(n))))
+	nonPrime[0] = nonPrime[1] = 1;          // 0 and 1 are not prime
 	for (int i = 2; i*i <= sz; i++) {
-		if (!nonPrime[i]) {
+		if (!nonPrime[i]) {                               //if the number is prime then all its nultiples are not
 			for (int j = i * i; j <= sz; j += i) {
 				nonPrime[j] = 1;
 			}
@@ -138,14 +139,23 @@ void sieveSOE() {               //sieve of eratosthenes                 n(log(lo
 }
 
 bool composite[sz];
-void segmentedSieveNoPreGen(long long L, long long R) {
-
+void segmentedSieveNoPreGen(long long L, long long R) {        //O((R-L+1)loglog(R))
 	for (long long i = 2; i * i <= R; ++i) {
 		for (long long j = max(i * i, (L + i - 1) / i * i); j <= R; j += i) {
 			composite[j - L] = true;
 		}
 	}
 	if (L == 1) { composite[0] = true;}
+}
+
+bool isprime(ll x) {                              // O(n^(1/2))
+    if (x < 2) return false;
+
+    for (ll i = 2;i*i <= x;i++) {
+        if (x % i == 0) return false;
+    }
+
+    return true;
 }
 
 
