@@ -127,6 +127,7 @@ ll ncr(int n,int r) {
 
 const int sz = 1e6+6;
 bool nonPrime[sz] = {0};        // at first we declare all numbers as prime
+vector<ll>primes;
 void sieveSOE() {               //sieve of eratosthenes                 O(n(log(log(n))))
 	nonPrime[0] = nonPrime[1] = 1;          // 0 and 1 are not prime
 	for (int i = 2; i*i <= sz; i++) {
@@ -134,6 +135,12 @@ void sieveSOE() {               //sieve of eratosthenes                 O(n(log(
 			for (int j = i * i; j <= sz; j += i) {
 				nonPrime[j] = 1;
 			}
+		}
+	}
+
+	for (int i = 0;i < sz;i++) {            //collect all primes in a vector
+		if (!nonPrime[i]) {
+			primes.push_back(i);
 		}
 	}
 }
@@ -156,6 +163,48 @@ bool isprime(ll x) {                              // O(n^(1/2))
     }
 
     return true;
+}
+
+struct matrix {
+   ll mat[2][2];
+   matrix friend operator * (const matrix& A,const matrix& B) {
+      matrix C;
+      for (int i = 0;i < 2;i++) {
+         for (int j = 0;j < 2;j++) {
+            C.mat[i][j] = 0;
+            for (int k = 0;k < 2;k++) {
+               C.mat[i][j] += A.mat[i][k]*B.mat[k][j];
+               C.mat[i][j] %= MOD;
+            }
+         }
+      }
+      return C;
+   }
+};
+
+matrix matpow(matrix A,ll n) {
+   matrix ans = {{
+      {1,0},
+      {0,1},
+   }} ;
+   while(n) {
+      if (n % 2 == 1) {
+         ans = ans*A;
+      }
+      A = A*A;
+      n /= 2;
+   }
+   return ans;
+}
+
+ll calculateNthFib(ll n,ll mod = MOD) {
+   matrix X = {{
+      {1,1},
+      {1,0},
+   }};
+   matrix nX = matpow(X,n);
+   ll nthFib = nX.mat[1][0];
+   return nthFib;
 }
 
 
