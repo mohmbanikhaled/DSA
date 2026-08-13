@@ -165,6 +165,17 @@ bool isprime(ll x) {                              // O(n^(1/2))
     return true;
 }
 
+int fib(int n) {
+    int a = 0;
+    int b = 1;
+    for (int i = 0; i < n; i++) {
+        int tmp = a + b;
+        a = b;
+        b = tmp;
+    }
+    return a;
+}
+
 struct matrix {
    ll mat[2][2];
    matrix friend operator * (const matrix& A,const matrix& B) {
@@ -197,7 +208,7 @@ matrix matpow(matrix A,ll n) {
    return ans;
 }
 
-ll calculateNthFib(ll n,ll mod = MOD) {
+ll calculateNthFib(ll n,ll mod) {
    matrix X = {{
       {1,1},
       {1,0},
@@ -207,5 +218,16 @@ ll calculateNthFib(ll n,ll mod = MOD) {
    return nthFib;
 }
 
+ll gray(ll n) {               //get gray code to any number
+	return n ^ (n >> 1);
+}
+
+ll reverseGray(ll g) {       //get number from gray code
+	ll n = 0;
+	for (;g;g >>= 1) {
+		n ^= g;
+	}
+	return n;
+}
 
 #endif
